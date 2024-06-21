@@ -1,0 +1,12 @@
+type: edu
+custom_name: "Bonus: Add style"
+files:
+  - name: src/index.html
+    visible: true
+    learner_created: false
+  - name: test/test.js
+    visible: false
+    learner_created: false
+feedback_link: https://hyperskill.org/projects/328/stages/1844/implement#comment
+status: Unchecked
+record: -1
