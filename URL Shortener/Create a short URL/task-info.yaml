@@ -9,12 +9,9 @@ files:
   - name: src/app.js
     visible: true
     learner_created: true
-feedback_link: https://hyperskill.org/projects/328/stages/1840/implement#comment
-status: Failed
+feedback_link: https://hyperskill.org/learn/step/26973#comment
+status: Solved
 feedback:
-  message: |-
-    Error: Wrong answer in test #3
-
-    The li element is not displayed in #list-url after clicking the button.
-  time: "Fri, 21 Jun 2024 15:57:24 UTC"
+  message: Congratulations!
+  time: "Mon, 29 Jul 2024 05:55:23 UTC"
 record: -1
