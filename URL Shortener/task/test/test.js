@@ -17,7 +17,7 @@ class Test extends StageTest {
     tests = [ this.page.execute(() => {
         // test #1
         // HELPERS-->
-        // method to check if element with selector exists
+        // method to check if element with id exists
         this.elementExists = (selector, nodeNames) => {
             const element = document.body.querySelector(selector);
             if (!element) return true;
@@ -106,6 +106,20 @@ class Test extends StageTest {
             if (!input) return wrong("The input field is missing.");
             input.value = "";
         };
+
+        // check click counts
+        this.checkClickCounts = (order, count) => {
+            const li = document.body.querySelector(`#list-url > li:nth-child(${order})`);
+            if (!li) return wrong("The li element is not displayed in #list-url after clicking the button.");
+            const spans = li.querySelectorAll("span");
+            if (spans.length > 1) return wrong("The li element has more than one span element.");
+            const span = li.querySelector("span");
+            if (!span) return wrong("The span element is not displayed in the li element after clicking the button.");
+            const correctText = 'Clicks:';
+            if (!span.innerText.includes(correctText))
+                return wrong(`The span element does not include the correct text: '${correctText}' .`);
+            if (!span.innerText.includes(count)) return wrong("The span element does not have the correct click count.");
+        }
 
         // CONSTANTS-->
         const theElement = "The element with the selector of";
@@ -240,6 +254,59 @@ class Test extends StageTest {
             // check paragraph
             await  this.page.evaluate(() => {
                 return this.checkP();
+            });
+
+            return correct();
+        }),
+
+        this.node.execute(async () => {
+            // test #4
+            // check click counter
+            const link1Selector = `#list-url > li:nth-child(1) a`;
+            const link1 = await this.page.findBySelector(link1Selector);
+            if (!link1) return wrong(`Do not remove the previously created links after a wrong input!`);
+
+            await link1.click();
+            await link1.click();
+
+            await new Promise((resolve => {
+                setTimeout(() => {
+                    resolve();
+                }, 1000)
+            }));
+
+            // check first link click counts
+            await this.page.evaluate(() => {
+                try {
+                    return this.checkClickCounts(1, 3);
+                }
+                catch (e) {
+                    return wrong("You should not reload the page or navigate to a different url on the same page after the link click.");
+                }
+            });
+
+            return correct();
+
+        }),
+        this.node.execute(async () => {
+            // test #4.1
+            // check click counter
+            const link2Selector = `#list-url > li:nth-child(2) a`;
+            const link2 = await this.page.findBySelector(link2Selector);
+            if (!link2) return wrong(`Do not remove the previously created links after a wrong input!`);
+
+            await link2.click();
+            await link2.click();
+
+            await new Promise((resolve => {
+                setTimeout(() => {
+                    resolve();
+                }, 1000)
+            }));
+
+            // check second link click counts
+            await this.page.evaluate(() => {
+                return this.checkClickCounts(2, 2);
             });
 
             return correct();

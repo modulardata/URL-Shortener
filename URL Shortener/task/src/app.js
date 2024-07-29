@@ -36,8 +36,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Create list item for short URL
             const listItem = document.createElement('li');
-            listItem.innerHTML = `<a href="${url}" target="_blank">${shortUrl}</a> - <span>Original URL: ${url}</span>`;
+            listItem.innerHTML = `<a href="${url}" target="_blank">${shortUrl}</a> - Original URL: ${url}<span>Clicks: 0</span>`;
             list.appendChild(listItem);
+
+            // Add event listener to short URL link
+            const shortLink = listItem.querySelector('a');
+            shortLink.addEventListener('click', () => {
+                // Increment click count
+                const clickCountSpan = listItem.querySelector('span');
+                let clickCount = parseInt(clickCountSpan.textContent.split(': ')[1]);
+                clickCount++;
+                clickCountSpan.textContent = `Clicks: ${clickCount}`;
+            });
 
             // Clear input field
             // input.value = '';
